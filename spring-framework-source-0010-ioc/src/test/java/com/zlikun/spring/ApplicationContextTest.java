@@ -27,14 +27,16 @@ public class ApplicationContextTest {
     public void init() {
         // 向容器中注册一个Bean
         context.registerSingleton("userService", UserServiceImpl.class);
-        // 刷新容器
+        // 刷新容器（实测当注册一个Bean后，必须执行方法）
         context.refresh();
-        // 启动容器
+        // 启动容器（实测这一步非必要，但其一定要晚于refresh执行）
         context.start();
     }
 
     @AfterEach
     public void destroy() {
+        // 从容器中删除Bean，该步骤非必要，仅用于描述一个完整的IoC容器生命周期使用
+        context.removeBeanDefinition("userService");
         context.stop();
     }
 
